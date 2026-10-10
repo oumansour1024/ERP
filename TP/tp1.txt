@@ -1,0 +1,21 @@
+Enoncé
+
+ 
+
+Connectez-vous à EspoCRM et réalisez les opérations suivantes :
+
+ 
+
+Créez un rôle intitulé commercial
+Donnez à ce rôle l’accès aux modules : Comptes, Appels, Contacts, Prospects, Opportunités, Rendez-Vous
+Donnez un accès complet aux modules ci-dessus (All)
+Donnez au même rôle le droit d’accès au module Documents en lecture seule
+Créez deux utilisateurs intitulés : CialNord, CialSud pui leur affecter le rôle commercial. Connectez vous avec pour tester l’accès au menu
+Pour les deux utilisateurs crées, simplifier les menus affichés pour que seul apparaissent les options : Comptes, Contacts et tâches
+Connectez vous avec l’un de ses deux utilisateurs. Arrive-t-il à voir le menu tâches ? Pourquoi ?
+Afficher alors le menu tâches pour les deux utilisateurs
+Dans l’écran comptes, ajouter un champ intitulé segment de type liste de valeurs. Les valeurs affichées sont : Administration/Entreprises Publiques, PME/PMI, Professionnels (utilisez pour cela le Builder et l’éditeur des listes de valeurs)
+Créer un user intitulé Patron qui le boss du cialnord et cialsud
+Connectez vous avec ce user et créez deux opportunités
+Assignez une opportunité à cialnord et une autre à cialsud
+Tester le cloisonnement des comptes en vous connectant avec les deux commerciaux respectivement

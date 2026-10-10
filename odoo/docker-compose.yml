@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  odoo-db:
+    image: postgres:15
+    container_name: odoo-db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: odoodb123
+      POSTGRES_USER: odoo
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data
+    restart: always
+
+  odoo:
+    image: odoo:18.0
+    container_name: odoo
+    depends_on:
+      - odoo-db
+    ports:
+      - "8069:8069"
+    environment:
+      - HOST=odoo-db
+      - USER=odoo
+      - PASSWORD=odoodb123
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+    restart: always
+
+volumes:
+  odoo-db-data:
+  odoo-web-data:
