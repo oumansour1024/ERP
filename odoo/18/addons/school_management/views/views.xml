@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_school_student_list" model="ir.ui.view">
+        <field name="name">school.student.list</field>
+        <field name="model">school.student</field>
+        <field name="arch" type="xml">
+            <list string="Students" default_order="name">
+                <field name="reference"/>
+                <field name="name"/>
+                <field name="track_id"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'enrolled'"
+                       decoration-primary="state == 'graduated'"
+                       decoration-danger="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_school_student_form" model="ir.ui.view">
+        <field name="name">school.student.form</field>
+        <field name="model">school.student</field>
+        <field name="arch" type="xml">
+            <form string="Student">
+                <header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,enrolled,graduated"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" placeholder="Student name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="reference"/>
+                            <field name="birth_date"/>
+                            <field name="gender"/>
+                        </group>
+                        <group>
+                            <field name="track_id"/>
+                            <field name="email" widget="email"/>
+                            <field name="phone" widget="phone"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes">
+                            <field name="notes" placeholder="Additional information..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_school_student_kanban" model="ir.ui.view">
+        <field name="name">school.student.kanban</field>
+        <field name="model">school.student</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="name"/>
+                <field name="reference"/>
+                <field name="track_id"/>
+                <field name="email"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <div class="d-flex justify-content-between">
+                                <strong><field name="name"/></strong>
+                                <span class="text-muted"><field name="reference"/></span>
+                            </div>
+                            <div t-if="record.track_id.raw_value" class="text-muted">
+                                <field name="track_id"/>
+                            </div>
+                            <div t-if="record.email.raw_value" class="text-muted">
+                                <field name="email"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_school_student_search" model="ir.ui.view">
+        <field name="name">school.student.search</field>
+        <field name="model">school.student</field>
+        <field name="arch" type="xml">
+            <search string="Students">
+                <field name="name"/>
+                <field name="reference"/>
+                <field name="track_id"/>
+                <field name="email"/>
+                <separator/>
+                <filter name="enrolled" string="Enrolled"
+                        domain="[('state', '=', 'enrolled')]"/>
+                <filter name="graduated" string="Graduated"
+                        domain="[('state', '=', 'graduated')]"/>
+                <filter name="archived" string="Archived"
+                        domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_state" string="Status"
+                            context="{'group_by': 'state'}"/>
+                    <filter name="group_by_track" string="Academic Track"
+                            context="{'group_by': 'track_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_school_track_list" model="ir.ui.view">
+        <field name="name">school.track.list</field>
+        <field name="model">school.track</field>
+        <field name="arch" type="xml">
+            <list string="Academic Tracks">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="student_count"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_school_track_form" model="ir.ui.view">
+        <field name="name">school.track.form</field>
+        <field name="model">school.track</field>
+        <field name="arch" type="xml">
+            <form string="Academic Track">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <field name="code"/>
+                        <field name="active"/>
+                        <field name="student_count" readonly="1"/>
+                    </group>
+                    <field name="description"/>
+                    <field name="student_ids" readonly="1">
+                        <list>
+                            <field name="reference"/>
+                            <field name="name"/>
+                            <field name="state"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_school_student" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">school.student</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_school_student_search"/>
+    </record>
+
+    <record id="action_school_track" model="ir.actions.act_window">
+        <field name="name">Academic Tracks</field>
+        <field name="res_model">school.track</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_school_root" name="School Management"
+              sequence="10" groups="base.group_user"/>
+    <menuitem id="menu_school_students" name="Students"
+              parent="menu_school_root" action="action_school_student"
+              sequence="10" groups="base.group_user"/>
+    <menuitem id="menu_school_tracks" name="Academic Tracks"
+              parent="menu_school_root" action="action_school_track"
+              sequence="20" groups="base.group_user"/>
+</odoo>

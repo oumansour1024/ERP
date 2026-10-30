@@ -25,6 +25,7 @@ services:
       - PASSWORD=odoodb123
     volumes:
       - odoo-web-data:/var/lib/odoo
+      - ./addons:/mnt/extra-addons
     restart: always
 
 volumes:

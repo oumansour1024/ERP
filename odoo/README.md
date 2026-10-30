@@ -50,6 +50,32 @@ Pour arrêter et supprimer les conteneurs (vos données restent protégées dans
 docker compose down
 ```
 
+## Module `school_management`
+
+Le module personnalisé se trouve dans `addons/school_management` et est monté
+automatiquement dans le conteneur Odoo sous `/mnt/extra-addons`. Il fournit la
+gestion des étudiants et des filières avec des vues liste, formulaire, kanban
+et recherche compatibles avec Odoo 18.
+
+Après le premier démarrage, créez une base depuis l'interface Odoo, puis
+installez le module directement depuis le conteneur :
+
+```bash
+docker compose exec odoo odoo -d <nom_de_la_base> -i school_management --stop-after-init
+docker compose restart odoo
+```
+
+Pour appliquer des modifications ultérieures au module :
+
+```bash
+docker compose exec odoo odoo -d <nom_de_la_base> -u school_management --stop-after-init
+docker compose restart odoo
+```
+
+Vous pouvez aussi activer le mode développeur dans Odoo, ouvrir
+**Applications**, actualiser la liste des applications et installer
+**School Management**.
+
 ---
 
 ## 🔗 Premier Accès & Configuration
