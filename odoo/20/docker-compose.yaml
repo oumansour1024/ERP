@@ -23,9 +23,9 @@ services:
       - HOST=odoo-20-db
       - USER=${DB_USER}
       - PASSWORD=${DB_PASSWORD}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
     volumes:
       - odoo-20-web-data:/var/lib/odoo
-      - ./config:/etc/odoo
       - ./addons:/mnt/extra-addons
     restart: always
 
